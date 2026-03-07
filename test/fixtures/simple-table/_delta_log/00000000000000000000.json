@@ -1,0 +1,5 @@
+{"protocol":{"minReaderVersion":1,"minWriterVersion":2}}
+{"metaData":{"id":"test-table-id","format":{"provider":"parquet"},"schemaString":"{\"type\":\"struct\",\"fields\":[{\"name\":\"id\",\"type\":\"long\",\"nullable\":false,\"metadata\":{}},{\"name\":\"name\",\"type\":\"string\",\"nullable\":true,\"metadata\":{}},{\"name\":\"value\",\"type\":\"double\",\"nullable\":true,\"metadata\":{}}]}","partitionColumns":[],"configuration":{},"createdTime":1700000000000}}
+{"add":{"path":"part-00000-aaa.parquet","partitionValues":{},"size":1024,"modificationTime":1700000000000,"dataChange":true,"stats":"{\"numRecords\":10}"}}
+{"add":{"path":"part-00001-bbb.parquet","partitionValues":{},"size":2048,"modificationTime":1700000000000,"dataChange":true,"stats":"{\"numRecords\":20}"}}
+{"commitInfo":{"timestamp":1700000000000,"operation":"WRITE","operationParameters":{}}}

@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Type check
+        run: pnpm run type-check
+
+      - name: Unit tests
+        run: pnpm vitest run --exclude 'test/delta-rs-compat/**'
+
+      - name: Clone delta-rs test fixtures
+        run: git clone --filter=blob:none --sparse https://github.com/delta-io/delta-rs.git /tmp/delta-rs-tests && cd /tmp/delta-rs-tests && git sparse-checkout set crates/test/tests/data crates/core/tests/data_err_logs
+
+      - name: Delta-rs compatibility tests
+        run: pnpm vitest run test/delta-rs-compat
