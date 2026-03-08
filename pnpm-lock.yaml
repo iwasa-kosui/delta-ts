@@ -8,13 +8,13 @@ importers:
 
   .:
     dependencies:
+      '@praha/byethrow':
+        specifier: ^0.10.0
+        version: 0.10.0(typescript@5.9.3)
       hyparquet:
         specifier: ^1.7.0
         version: 1.25.1
     devDependencies:
-      '@praha/byethrow':
-        specifier: ^0.10.0
-        version: 0.10.0(typescript@5.9.3)
       '@types/node':
         specifier: ^22.0.0
         version: 22.19.15
