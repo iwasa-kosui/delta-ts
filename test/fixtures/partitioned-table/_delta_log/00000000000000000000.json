@@ -1,0 +1,5 @@
+{"protocol":{"minReaderVersion":1,"minWriterVersion":2}}
+{"metaData":{"id":"partitioned-table-id","format":{"provider":"parquet"},"schemaString":"{\"type\":\"struct\",\"fields\":[{\"name\":\"date\",\"type\":\"date\",\"nullable\":false,\"metadata\":{}},{\"name\":\"category\",\"type\":\"string\",\"nullable\":false,\"metadata\":{}},{\"name\":\"amount\",\"type\":\"integer\",\"nullable\":true,\"metadata\":{}}]}","partitionColumns":["date","category"],"configuration":{},"createdTime":1700000000000}}
+{"add":{"path":"date=2024-01-01/category=A/part-00000.parquet","partitionValues":{"date":"2024-01-01","category":"A"},"size":1024,"modificationTime":1700000000000,"dataChange":true,"stats":"{\"numRecords\":100}"}}
+{"add":{"path":"date=2024-01-01/category=B/part-00000.parquet","partitionValues":{"date":"2024-01-01","category":"B"},"size":2048,"modificationTime":1700000000000,"dataChange":true,"stats":"{\"numRecords\":200}"}}
+{"commitInfo":{"timestamp":1700000000000,"operation":"WRITE","operationParameters":{}}}
