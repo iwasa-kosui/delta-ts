@@ -40,6 +40,22 @@
   "engines": {
     "node": ">=18"
   },
+  "keywords": [
+    "delta",
+    "delta-lake",
+    "parquet",
+    "data-lake",
+    "lakehouse"
+  ],
+  "author": "iwasa-kosui",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iwasa-kosui/delta-ts.git"
+  },
+  "homepage": "https://github.com/iwasa-kosui/delta-ts#readme",
+  "bugs": {
+    "url": "https://github.com/iwasa-kosui/delta-ts/issues"
+  },
   "license": "MIT",
   "pnpm": {
     "onlyBuiltDependencies": [
