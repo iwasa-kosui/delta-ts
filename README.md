@@ -2,7 +2,7 @@
 
 Lightweight, read-only TypeScript library for [Delta Lake](https://delta.io/) tables.
 
-- **Runtime-agnostic** — works in Node.js, Deno, Bun, browsers, and edge runtimes (no `fs` dependency)
+- **Runtime-agnostic** — core library works in Node.js, Deno, Bun, browsers, and edge runtimes (no `fs` dependency). Optional filesystem stores are available as subpath imports (`delta-ts/node`, `delta-ts/bun`, `delta-ts/deno`)
 - **Minimal dependencies** — only [hyparquet](https://github.com/hyparam/hyparquet) (Parquet reader) and [@praha/byethrow](https://github.com/praha-inc/byethrow) (Result type)
 - **Type-safe error handling** — all fallible operations return `Result<T, E>` instead of throwing
 
