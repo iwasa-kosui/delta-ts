@@ -137,6 +137,12 @@ Returns `ResultAsync<DeltaTable, OpenError>`
 - Schema parsing (struct, array, map, primitives)
 - Protocol version gating (reader version 1)
 
+## Acknowledgments
+
+This project is deeply inspired by [delta-rs](https://github.com/delta-io/delta-rs), the Rust implementation of the Delta Lake protocol. The delta-rs codebase served as an invaluable reference for understanding the Delta Lake transaction log protocol, and many of our compatibility tests are ported directly from its test suite. We are grateful to the delta-rs maintainers and contributors for their excellent work.
+
+Built on the [Delta Lake](https://delta.io/) open table format.
+
 ## License
 
 MIT
