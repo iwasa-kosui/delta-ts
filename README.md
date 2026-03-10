@@ -83,9 +83,33 @@ if (Result.isFailure(result)) {
 }
 ```
 
+### Reading from Local Filesystem
+
+Runtime-specific filesystem stores are available as subpath exports:
+
+```ts
+// Node.js
+import { NodeStore } from "delta-ts/node";
+const result = await DeltaTable.open({
+  store: NodeStore.create("/path/to/delta-table"),
+});
+
+// Bun
+import { BunStore } from "delta-ts/bun";
+const result = await DeltaTable.open({
+  store: BunStore.create("/path/to/delta-table"),
+});
+
+// Deno
+import { DenoStore } from "delta-ts/deno";
+const result = await DeltaTable.open({
+  store: DenoStore.create("/path/to/delta-table"),
+});
+```
+
 ### Custom Store
 
-Implement the `DeltaStore` interface to read from any storage backend (S3, GCS, local filesystem, etc.):
+Implement the `DeltaStore` interface to read from any storage backend (S3, GCS, etc.):
 
 ```ts
 import type { DeltaStore } from "delta-ts";
