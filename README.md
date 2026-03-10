@@ -65,23 +65,103 @@ if (Result.isSuccess(v0Result)) {
 
 ### Error Handling
 
-All operations return `Result<T, E>` from `@praha/byethrow`. Errors are plain objects with a `type` discriminant:
+All operations return `Result<T, E>` from `@praha/byethrow`. Errors are plain objects with a `type` discriminant, enabling exhaustive pattern matching.
+
+#### Basic Error Checking
 
 ```ts
 const result = await DeltaTable.open({ url: "https://..." });
 
 if (Result.isFailure(result)) {
-  switch (result.error.type) {
+  console.error(result.error.type, result.error.message);
+  return;
+}
+
+// result.value is narrowed to DeltaTable
+const table = result.value;
+```
+
+#### Exhaustive Error Handling
+
+`DeltaTable.open` can produce the following error types. Use a `switch` statement with a `default: never` check to ensure all cases are handled at compile time:
+
+```ts
+import { DeltaTable, DeltaError, Result } from "delta-ts";
+
+const result = await DeltaTable.open({ url: "https://..." });
+
+if (Result.isFailure(result)) {
+  const error = result.error;
+
+  switch (error.type) {
     case "TABLE_NOT_FOUND":
-    case "STORE_ERROR":
-    case "LOG_NOT_FOUND":
-    case "UNSUPPORTED_PROTOCOL":
-    case "SCHEMA_PARSE_ERROR":
-      console.error(result.error.message);
+      console.error("Table not found:", error.message);
       break;
+    case "STORE_ERROR":
+      console.error("Storage read failed:", error.message);
+      break;
+    case "LOG_NOT_FOUND":
+      console.error("Transaction log missing:", error.message);
+      break;
+    case "INVALID_LOG_ENTRY":
+      console.error(`Invalid log at version ${error.version}:`, error.message);
+      break;
+    case "CHECKPOINT_READ_ERROR":
+      console.error(`Checkpoint error at version ${error.version}:`, error.message);
+      break;
+    case "UNSUPPORTED_PROTOCOL":
+      console.error(
+        `Reader version ${error.requiredVersion} required, but only ${error.supportedVersion} is supported`,
+      );
+      break;
+    case "SCHEMA_PARSE_ERROR":
+      console.error("Failed to parse schema:", error.message);
+      break;
+    default: {
+      // Compile-time exhaustiveness check — if a new error type is added,
+      // TypeScript will report an error here until you handle it.
+      const _exhaustive: never = error;
+      throw new Error(`Unhandled error type: ${(_exhaustive as DeltaError).type}`);
+    }
   }
 }
 ```
+
+#### Time-Travel Errors
+
+`atVersion()` returns a subset of errors (no `TABLE_NOT_FOUND` or `STORE_ERROR`):
+
+```ts
+const v0 = await table.atVersion(0);
+
+if (Result.isFailure(v0)) {
+  switch (v0.error.type) {
+    case "LOG_NOT_FOUND":
+    case "INVALID_LOG_ENTRY":
+    case "CHECKPOINT_READ_ERROR":
+    case "UNSUPPORTED_PROTOCOL":
+    case "SCHEMA_PARSE_ERROR":
+      console.error(v0.error.message);
+      break;
+    default: {
+      const _exhaustive: never = v0.error;
+      throw new Error(`Unhandled error type: ${(_exhaustive as DeltaError).type}`);
+    }
+  }
+}
+```
+
+#### Error Type Reference
+
+| Error Type | Extra Fields | When |
+|---|---|---|
+| `TABLE_NOT_FOUND` | — | No `store` or `url` provided |
+| `STORE_ERROR` | — | Storage backend read failure |
+| `LOG_NOT_FOUND` | — | Transaction log directory missing |
+| `INVALID_LOG_ENTRY` | `version`, `cause?` | Malformed JSON log entry |
+| `CHECKPOINT_READ_ERROR` | `version`, `cause?` | Failed to read Parquet checkpoint |
+| `UNSUPPORTED_PROTOCOL` | `requiredVersion`, `supportedVersion` | Table requires unsupported reader version |
+| `SCHEMA_PARSE_ERROR` | `cause?` | Invalid schema in metadata |
 
 ### Reading from Local Filesystem
 
