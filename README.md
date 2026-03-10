@@ -2,7 +2,7 @@
 
 Lightweight, read-only TypeScript library for [Delta Lake](https://delta.io/) tables.
 
-- **Runtime-agnostic** — works in Node.js, Deno, Bun, browsers, and edge runtimes (no `fs` dependency)
+- **Runtime-agnostic** — core library works in Node.js, Deno, Bun, browsers, and edge runtimes (no `fs` dependency). Optional filesystem stores are available as subpath imports (`delta-ts/node`, `delta-ts/bun`, `delta-ts/deno`)
 - **Minimal dependencies** — only [hyparquet](https://github.com/hyparam/hyparquet) (Parquet reader) and [@praha/byethrow](https://github.com/praha-inc/byethrow) (Result type)
 - **Type-safe error handling** — all fallible operations return `Result<T, E>` instead of throwing
 
@@ -83,9 +83,33 @@ if (Result.isFailure(result)) {
 }
 ```
 
+### Reading from Local Filesystem
+
+Runtime-specific filesystem stores are available as subpath exports:
+
+```ts
+// Node.js
+import { NodeStore } from "delta-ts/node";
+const result = await DeltaTable.open({
+  store: NodeStore.create("/path/to/delta-table"),
+});
+
+// Bun
+import { BunStore } from "delta-ts/bun";
+const result = await DeltaTable.open({
+  store: BunStore.create("/path/to/delta-table"),
+});
+
+// Deno
+import { DenoStore } from "delta-ts/deno";
+const result = await DeltaTable.open({
+  store: DenoStore.create("/path/to/delta-table"),
+});
+```
+
 ### Custom Store
 
-Implement the `DeltaStore` interface to read from any storage backend (S3, GCS, local filesystem, etc.):
+Implement the `DeltaStore` interface to read from any storage backend (S3, GCS, etc.):
 
 ```ts
 import type { DeltaStore } from "delta-ts";
