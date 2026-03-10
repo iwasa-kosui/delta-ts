@@ -6,7 +6,7 @@
 
 ## Language
 
-- All code, comments, commit messages, PR titles, and documentation MUST be in **English**.
+- **All operations MUST be in English** — code, comments, commit messages, PR titles, PR descriptions, documentation, and all communication with the user.
 - Japanese is only used inside `<details>` blocks in PR descriptions for Japanese-speaking readers.
 
 ## Commands
