@@ -55,6 +55,8 @@
     "build": "tsup",
     "type-check": "tsc --noEmit && tsc --noEmit -p src/store-bun/tsconfig.json && tsc --noEmit -p src/store-deno/tsconfig.json",
     "test": "vitest run",
+    "test:bun": "bun test test/store/BunStore.bun.test.ts",
+    "test:deno": "deno test --allow-read --allow-write test/store/DenoStore.deno.test.ts",
     "test:watch": "vitest"
   },
   "dependencies": {

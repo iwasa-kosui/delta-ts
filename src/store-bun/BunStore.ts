@@ -56,14 +56,13 @@ export const BunStore = {
 
       fileSize: async (filePath) => {
         const fullPath = resolve(filePath);
-        try {
-          const size = Bun.file(fullPath).size;
-          return Result.succeed(size);
-        } catch {
+        const file = Bun.file(fullPath);
+        if (!(await file.exists())) {
           return Result.fail(
             DeltaError.storeError(`Failed to get file size: ${fullPath}`),
           );
         }
+        return Result.succeed(file.size);
       },
     };
   },
